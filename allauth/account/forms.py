@@ -196,7 +196,7 @@ class BaseSignupForm(_base_signup_form_class()):
                                widget=forms.TextInput(
                                    attrs={'placeholder':
                                           _('Username'),
-                                          'autofocus': 'autofocus'}))
+                                          }))
     email = forms.EmailField(widget=forms.TextInput(attrs=
                                                     {'placeholder':
                                                      _('E-mail address')}))
@@ -211,6 +211,7 @@ class BaseSignupForm(_base_signup_form_class()):
         # so take proper care when reordering...
         field_order = ['email', 'username']
         merged_field_order = list(self.fields.keys())
+
         if email_required:
             self.fields["email"].label = ugettext("E-mail")
             self.fields["email"].required = True
@@ -218,7 +219,14 @@ class BaseSignupForm(_base_signup_form_class()):
             self.fields["email"].label = ugettext("E-mail (optional)")
             self.fields["email"].required = False
             if self.username_required:
-                field_order = ['username', 'email']
+                field_order = ['email', 'username']
+
+        for field in field_order:
+            merged_field_order = [s for s in merged_field_order if s != field]
+        for field in ['password2', 'password1']:
+            if field in merged_field_order:
+                merged_field_order = [s for s in merged_field_order if s != field]
+                merged_field_order.insert(0, field)
 
         # Merge our email and username fields in if they are not
         # currently in the order.  This is to allow others to

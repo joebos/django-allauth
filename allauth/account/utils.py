@@ -133,7 +133,9 @@ def perform_login(request, user, email_verification,
                               'account/messages/logged_in.txt',
                               {'user': user})
 
-    return HttpResponseRedirect(get_login_redirect_url(request, redirect_url))
+    #rediect_url might be wrong because request.user is not set
+    return HttpResponseRedirect(get_login_redirect_url(request, None))
+    #return HttpResponseRedirect(get_login_redirect_url(request, redirect_url))
 
 
 def complete_signup(request, user, email_verification, success_url,

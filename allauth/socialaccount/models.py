@@ -15,7 +15,7 @@ except ImportError:
 
 import allauth.app_settings
 from allauth.account.models import EmailAddress
-from allauth.account.utils import get_next_redirect_url, setup_user_email
+from allauth.account.utils import get_next_redirect_url, setup_user_email, get_login_redirect_url
 from allauth.utils import (get_user_model, serialize_instance,
                            deserialize_instance)
 
@@ -250,7 +250,8 @@ class SocialLogin(object):
             pass
 
     def get_redirect_url(self, request):
-        url = self.state.get('next')
+        #url = self.state.get('next')
+        url = get_login_redirect_url(request)
         return url
 
     @classmethod

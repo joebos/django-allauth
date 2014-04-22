@@ -89,6 +89,7 @@ def _add_social_account(request, sociallogin):
     else:
         # New account, let's connect
         sociallogin.connect(request, request.user)
+        get_adapter().populate_user(request, sociallogin, sociallogin.account.extra_data)
         try:
             signals.social_account_added.send(sender=SocialLogin,
                                               request=request,
