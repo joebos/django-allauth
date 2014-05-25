@@ -15,7 +15,6 @@ from ..account.app_settings import EmailVerificationMethod
 
 from . import app_settings
 
-
 class DefaultSocialAccountAdapter(object):
 
     def pre_social_login(self, request, sociallogin):
