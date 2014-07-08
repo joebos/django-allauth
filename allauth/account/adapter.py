@@ -238,6 +238,7 @@ class DefaultAccountAdapter(object):
                 if message:
                     messages.add_message(request, level, message,
                                          extra_tags=extra_tags)
+                    i = 0
             except TemplateDoesNotExist:
                 pass
 

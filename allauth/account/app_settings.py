@@ -190,6 +190,14 @@ class AppSettings(object):
         return self._setting('LOGIN_ON_EMAIL_CONFIRMATION', True)
 
     @property
+    def RESET_PASSWORD_FROM_KEY_DONE_REDIRECT_URL(self):
+        """
+        Autmatically log the user in once he confirmed his email address
+        """
+        from django.core.urlresolvers import reverse, reverse_lazy
+        return self._setting('RESET_PASSWORD_FROM_KEY_DONE_REDIRECT_URL',  reverse_lazy("account_reset_password_from_key_done"))
+
+    @property
     def LOGOUT_REDIRECT_URL(self):
         return self._setting('LOGOUT_REDIRECT_URL', '/')
 

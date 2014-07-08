@@ -514,7 +514,7 @@ class PasswordResetFromKeyView(FormView):
     template_name = "account/password_reset_from_key.html"
     form_class = ResetPasswordKeyForm
     token_generator = default_token_generator
-    success_url = reverse_lazy("account_reset_password_from_key_done")
+    success_url = app_settings.RESET_PASSWORD_FROM_KEY_DONE_REDIRECT_URL
 
     def _get_user(self, uidb36):
         # pull out user
