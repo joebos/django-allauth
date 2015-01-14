@@ -98,7 +98,7 @@ class DefaultAccountAdapter(object):
         that URLs passed explicitly (e.g. by passing along a `next`
         GET parameter) take precedence over the value returned here.
         """
-        assert request.user.is_authenticated()
+    #    assert request.user.is_authenticated()
         url = getattr(settings, "LOGIN_REDIRECT_URLNAME", None)
         if url:
             warnings.warn("LOGIN_REDIRECT_URLNAME is deprecated, simply"
