@@ -5,6 +5,9 @@ from allauth.socialaccount.providers.oauth.provider import OAuthProvider
 
 
 class TwitterAccount(ProviderAccount):
+    def get_id_str(self):
+        return self.account.extra_data.get('id_str')
+
     def get_screen_name(self):
         return self.account.extra_data.get('screen_name')
 
