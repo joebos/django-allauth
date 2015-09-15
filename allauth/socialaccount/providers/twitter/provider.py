@@ -43,6 +43,9 @@ class TwitterProvider(OAuthProvider):
             url = 'https://api.twitter.com/oauth/authorize'
         else:
             url = 'https://api.twitter.com/oauth/authenticate'
+        from django.conf import settings
+        force_login = getattr(settings, "TWITTER_FORCE_LOGIN", "1")
+        url = url + "?force_login=" + force_login
         return url
 
     def extract_uid(self, data):

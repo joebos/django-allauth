@@ -139,7 +139,7 @@ class OAuthClient(object):
         params = {'oauth_token': request_token['oauth_token'],
                   'oauth_callback': self.request.build_absolute_uri(
                       self.callback_url)}
-        url = authorization_url + '?' + urlencode(params)
+        url = authorization_url + ('?' if authorization_url.find("?") < 0 else "&") + urlencode(params)
         return HttpResponseRedirect(url)
 
 
