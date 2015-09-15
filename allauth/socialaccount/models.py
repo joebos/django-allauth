@@ -252,8 +252,8 @@ class SocialLogin(object):
     def get_redirect_url(self, request):
         url = self.state.get('next')
         process = self.state.get('process')
-        if process != 'connect':
-            url = get_login_redirect_url(request)
+        #if process != 'connect':
+        #    url = get_login_redirect_url(request)
         return url
 
     @classmethod
