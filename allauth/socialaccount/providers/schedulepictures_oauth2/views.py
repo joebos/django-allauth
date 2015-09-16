@@ -8,7 +8,10 @@ from .provider import SchedulePicturesOAuth2Provider
 
 class SchedulePicturesOAuth2Adapter(OAuth2Adapter):
 
-    schedulepictures_url = "http://192.168.1.17:3600"
+    #schedulepictures_url = "http://192.168.1.17:3600"
+
+    schedulepictures_url = "https://www.schedulepictures.com"
+
 
     provider_id = SchedulePicturesOAuth2Provider.id
     access_token_url = schedulepictures_url + '/oauth/token/'
