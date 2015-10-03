@@ -19,6 +19,7 @@ class OAuth2Client(object):
         self.request = request
         self.access_token_url = access_token_url
         self.callback_url = callback_url
+        self.callback_url = self.callback_url.replace("http://", "https://")
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.scope = ' '.join(scope)
@@ -46,7 +47,13 @@ class OAuth2Client(object):
         url = self.access_token_url
         # TODO: Proper exception handling
         resp = requests.post(url, params)
+
+        import json
+        print json.dumps(params)
+        print url
+
         access_token = None
+        print resp.status_code
         if resp.status_code == 200:
             # Weibo sends json via 'text/plain;charset=UTF-8'
             if (resp.headers['content-type'].split(';')[0] == 'application/json'
@@ -57,4 +64,7 @@ class OAuth2Client(object):
         if not access_token or 'access_token' not in access_token:
             raise OAuth2Error('Error retrieving access token: %s' 
                               % resp.content)
+
+        print json.dumps(access_token)
+
         return access_token
