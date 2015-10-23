@@ -16,8 +16,8 @@ class PinterestAccount(ProviderAccount):
         name = self.account.extra_data.get('username', dflt)
         first_name = self.account.extra_data.get('first_name', None)
         last_name = self.account.extra_data.get('last_name', None)
-        if first_name and last_name:
-            name = first_name + ' ' + last_name
+        #if first_name and last_name:
+        #    name = first_name + ' ' + last_name
         return name
 
 class PinterestProvider(OAuth2Provider):
