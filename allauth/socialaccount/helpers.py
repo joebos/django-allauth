@@ -60,11 +60,29 @@ def _login_social_account(request, sociallogin):
                          signal_kwargs={"sociallogin": sociallogin})
 
 
+def send_social_connection_error_email(context):
+    from django.core.mail import get_connection, EmailMessage
+    import json
+    msg = EmailMessage('social account connection error',
+                            json.dumps(context) if context else 'no error message found!',
+                           'joe@socialsellingjoy.com',
+                           ['frank_lqx@yahoo.com'],
+                           ['joe@socialsellingjoy.com'])
+    msg.connection = get_connection('django.core.mail.backends.smtp.EmailBackend')
+    msg.send()
+    msg.connection.close()
+
+
 def render_authentication_error(request, extra_context={}):
+    try:
+        if extra_context:
+            send_social_connection_error_email(extra_context)
+    except Exception as e:
+        print ">>>>>>>>>COULD not send social connection error email"
+
     return render_to_response(
         "socialaccount/authentication_error.html",
         extra_context, context_instance=RequestContext(request))
-
 
 def _add_social_account(request, sociallogin):
     if request.user.is_anonymous():

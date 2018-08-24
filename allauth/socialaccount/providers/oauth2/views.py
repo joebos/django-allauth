@@ -71,17 +71,22 @@ class OAuth2LoginView(OAuth2View):
         auth_params = provider.get_auth_params(request, action)
         client.state = SocialLogin.stash_state(request)
         try:
-            return HttpResponseRedirect(client.get_redirect_url(auth_url, 
+            return HttpResponseRedirect(client.get_redirect_url(auth_url,
                                                                 auth_params))
-        except OAuth2Error:
-            return render_authentication_error(request)
-
+        except OAuth2Error as e:
+            return render_authentication_error(request, {'error': e.message})
 
 class OAuth2CallbackView(OAuth2View):
     def dispatch(self, request):
         if 'error' in request.GET or not 'code' in request.GET:
+            error_context = {}
+            try:
+                import json
+                error_context = {"error": "facebook:" + request.GET["error_message"] if "error_message" in request.GET else ''}
+            except Exception, args:
+                pass
             # TODO: Distinguish cancel from error
-            return render_authentication_error(request)
+            return render_authentication_error(request, error_context)
         app = self.adapter.get_provider().get_app(self.request)
         client = self.get_client(request, app)
         try:
@@ -102,6 +107,6 @@ class OAuth2CallbackView(OAuth2View):
             else:
                 login.state = SocialLogin.unstash_state(request)
             return complete_social_login(request, login)
-        except OAuth2Error:
-            return render_authentication_error(request)
+        except OAuth2Error as e:
+            return render_authentication_error(request, {'error': e.message})
 

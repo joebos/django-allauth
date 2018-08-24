@@ -60,9 +60,8 @@ class OAuthLoginView(OAuthView):
         client = self._get_client(request, callback_url)
         try:
             return client.get_redirect(auth_url)
-        except OAuthError:
-            return render_authentication_error(request)
-
+        except OAuthError as e:
+            return render_authentication_error(request, {'error': e.message})
 
 class OAuthCallbackView(OAuthView):
     def dispatch(self, request):
@@ -88,5 +87,5 @@ class OAuthCallbackView(OAuthView):
             login.token = token
             login.state = SocialLogin.unstash_state(request)
             return complete_social_login(request, login)
-        except OAuthError:
-            return render_authentication_error(request)
+        except OAuthError as e:
+            return render_authentication_error(request, {'error': e.message})
