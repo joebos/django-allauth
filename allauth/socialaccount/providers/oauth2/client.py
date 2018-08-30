@@ -65,6 +65,6 @@ class OAuth2Client(object):
             raise OAuth2Error('Error retrieving access token: %s' 
                               % resp.content)
 
-        print json.dumps(access_token)
+        #print json.dumps(access_token)
 
         return access_token

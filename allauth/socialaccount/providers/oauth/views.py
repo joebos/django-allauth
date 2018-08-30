@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from allauth.socialaccount.helpers import render_authentication_error
+from allauth.socialaccount.helpers import render_authentication_error, send_social_connection_error_email
 from allauth.socialaccount.providers.oauth.client import (OAuthClient,
                                                           OAuthError)
 from allauth.socialaccount.helpers import complete_social_login
@@ -62,6 +62,8 @@ class OAuthLoginView(OAuthView):
             return client.get_redirect(auth_url)
         except OAuthError as e:
             return render_authentication_error(request, {'error': e.message})
+        except Exception as ex:
+            send_social_connection_error_email(request, {'error': ex.message})
 
 class OAuthCallbackView(OAuthView):
     def dispatch(self, request):
@@ -89,3 +91,5 @@ class OAuthCallbackView(OAuthView):
             return complete_social_login(request, login)
         except OAuthError as e:
             return render_authentication_error(request, {'error': e.message})
+        except Exception as ex:
+            send_social_connection_error_email(request, {'error': ex.message})

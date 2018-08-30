@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.utils import timezone
 
 from allauth.utils import build_absolute_uri
-from allauth.socialaccount.helpers import render_authentication_error
+from allauth.socialaccount.helpers import render_authentication_error, send_social_connection_error_email
 from allauth.socialaccount import providers
 from allauth.socialaccount.providers.oauth2.client import (OAuth2Client,
                                                            OAuth2Error)
@@ -75,6 +75,8 @@ class OAuth2LoginView(OAuth2View):
                                                                 auth_params))
         except OAuth2Error as e:
             return render_authentication_error(request, {'error': e.message})
+        except Exception as ex:
+            send_social_connection_error_email(request, {'error': ex.message})
 
 class OAuth2CallbackView(OAuth2View):
     def dispatch(self, request):
@@ -109,4 +111,6 @@ class OAuth2CallbackView(OAuth2View):
             return complete_social_login(request, login)
         except OAuth2Error as e:
             return render_authentication_error(request, {'error': e.message})
+        except Exception as ex:
+            send_social_connection_error_email(request, {'error': ex.message})
 
